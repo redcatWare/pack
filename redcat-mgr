@@ -1,17 +1,9 @@
 #!/bin/bash
 
-SEARCH_CMD=""
-INSTALL_CMD=""
-REMOVE_CMD=""
-UPDATE_CMD=""
-
-initialize_commands() {
-    # Set package manager commands
-    SEARCH_CMD="search"
-    INSTALL_CMD="install"
-    REMOVE_CMD="remove"
-    UPDATE_CMD="update"
-}
+SEARCH_CMD="search"
+INSTALL_CMD="install"
+REMOVE_CMD="remove"
+UPDATE_CMD="update"
 
 search_packages() {
     query="$1"
@@ -21,7 +13,7 @@ search_packages() {
     flatpak $SEARCH_CMD "$query" > "$search_results"
 
     # Search Aptitude packages
-    apt search "$query" > "$search_results"
+    apt search "$query" >> "$search_results"
 }
 
 select_packages() {
@@ -52,8 +44,6 @@ update_packages() {
 }
 
 main() {
-    initialize_commands
-
     while true; do
         action=$(dialog --menu "Choose an action:" 10 40 3 \
             1 "Search & Install Packages" \
@@ -73,9 +63,6 @@ main() {
             3)  # Update Packages
                 update_packages
                 ;;
-            4)  # Exit
-                exit
-                ;;
             *)  # Exit on Cancel or ESC
                 exit
                 ;;
@@ -88,4 +75,3 @@ main() {
 
 # Run the main function
 main
-
