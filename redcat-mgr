@@ -48,7 +48,8 @@ main() {
         action=$(dialog --menu "Choose an action:" 10 40 3 \
             1 "Search & Install Packages" \
             2 "Remove Packages" \
-            3 "Update Packages" --stdout)
+            3 "Update Packages" \
+            4 "Exit" --stdout)
 
         case $action in
             1)  # Search & Install Packages
@@ -63,7 +64,7 @@ main() {
             3)  # Update Packages
                 update_packages
                 ;;
-            *)  # Exit on Cancel or ESC
+            4)  # Exit
                 exit
                 ;;
         esac
