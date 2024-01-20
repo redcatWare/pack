@@ -1,1 +1,91 @@
+#!/bin/bash
+
+SEARCH_CMD=""
+INSTALL_CMD=""
+REMOVE_CMD=""
+UPDATE_CMD=""
+
+initialize_commands() {
+    # Set package manager commands
+    SEARCH_CMD="search"
+    INSTALL_CMD="install"
+    REMOVE_CMD="remove"
+    UPDATE_CMD="update"
+}
+
+search_packages() {
+    query="$1"
+    search_results=$(mktemp)
+
+    # Search Flatpak packages
+    flatpak $SEARCH_CMD "$query" > "$search_results"
+
+    # Search Aptitude packages
+    apt search "$query" > "$search_results"
+}
+
+select_packages() {
+    packages=$(dialog --checklist "Select packages:" 20 60 10 \
+        $(cat "$1" | awk '{ print $1 " " $2 " off" }') --stdout)
+}
+
+confirm_action() {
+    dialog --yesno "Are you sure you want to $1 these packages?" 8 40
+}
+
+install_packages() {
+    select_packages "$1"
+    if [ "$packages" ]; then
+        confirm_action "install" && sudo $INSTALL_CMD $packages
+    fi
+}
+
+remove_packages() {
+    select_packages "$1"
+    if [ "$packages" ]; then
+        confirm_action "remove" && sudo $REMOVE_CMD $packages
+    fi
+}
+
+update_packages() {
+    confirm_action "update" && sudo $UPDATE_CMD
+}
+
+main() {
+    initialize_commands
+
+    while true; do
+        action=$(dialog --menu "Choose an action:" 10 40 3 \
+            1 "Search & Install Packages" \
+            2 "Remove Packages" \
+            3 "Update Packages" --stdout)
+
+        case $action in
+            1)  # Search & Install Packages
+                query=$(dialog --inputbox "Enter package name:" 8 40 --stdout)
+                search_packages "$query"
+                install_packages "$search_results"
+                ;;
+            2)  # Remove Packages
+                search_packages ""
+                remove_packages "$search_results"
+                ;;
+            3)  # Update Packages
+                update_packages
+                ;;
+            4)  # Exit
+                exit
+                ;;
+            *)  # Exit on Cancel or ESC
+                exit
+                ;;
+        esac
+    done
+
+    # Clean up temporary files
+    rm -f "$search_results"
+}
+
+# Run the main function
+main
 
