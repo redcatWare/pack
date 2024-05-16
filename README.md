@@ -10,5 +10,5 @@
 Run this script as `sudo` or root.
 
 ```
-wget -O https://raw.githubusercontent.com/redcatWare/pack/main/install ./install | bash
+wget -O ./install https://raw.githubusercontent.com/redcatWare/pack/main/install | bash
 ```
