@@ -7,4 +7,5 @@
 - Flatpak, Pacstall, & Nala installed
 
 # Installation
-### Coming soon.
+Run this script as `sudo` or root.
+```wget -O - https://raw.githubusercontent.com/redcatWare/pack/main/install | bash```
