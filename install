@@ -10,7 +10,7 @@ download_dir="/tmp"
 download_file="pack"
 
 # Installation directory
-install_dir="/usr/bin/pack"
+install_dir="/usr/bin"
 
 # Check download directory permissions (avoid root)
 if [ ! -w "$download_dir" ]; then
