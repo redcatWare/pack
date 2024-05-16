@@ -27,8 +27,8 @@ if [ ! -f "$download_dir/$download_file" ]; then
     exit 1
 fi
 
-# Move to install directory (avoid root)
-mv "$download_dir/$download_file" "$install_dir"
+# Move to install directory
+sudo mv "$download_dir/$download_file" "$install_dir"
 
 # Make the script executable (caution: see note below)
 chmod +x "$install_dir/$download_file"
