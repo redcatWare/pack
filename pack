@@ -1,0 +1,157 @@
+#!/bin/bash
+
+# Function to detect the Linux distribution
+detect_distribution() {
+    if [ -f /etc/os-release ]; then
+        source /etc/os-release
+        DISTRIBUTION=$ID
+    elif [ -f /etc/lsb-release ]; then
+        source /etc/lsb-release
+        DISTRIBUTION=$DISTRIB_ID
+    elif [ -f /etc/debian_version ]; then
+        DISTRIBUTION="debian"
+    else
+        DISTRIBUTION="unknown"
+    fi
+}
+
+# Function to install packages
+install_package() {
+    case "$PACKAGE_MANAGER" in
+        "system")
+            sudo nala install "$@"
+            ;;
+        "flatpak")
+            flatpak install flathub "$@"
+            ;;
+        "aur")
+            sudo pacstall install "$@"
+            ;;
+        *)
+            echo "Unsupported package manager."
+            exit 1
+            ;;
+    esac
+}
+
+# Function to remove packages
+remove_package() {
+    case "$PACKAGE_MANAGER" in
+        "system")
+            sudo nala remove "$@"
+            ;;
+        "aur")
+            sudo pacstall remove "$@"
+            ;;
+        "flatpak")
+            flatpak remove "$@"
+            ;;
+        *)
+            echo "Unsupported package manager."
+            exit 1
+            ;;
+    esac
+}
+
+# Function to autoremove and purge packages
+autoremove_purge() {
+    case "$PACKAGE_MANAGER" in
+        "system")
+            sudo nala autoremove
+            ;;
+        *)
+            echo "This option is only supported for the system package manager."
+            exit 1
+            ;;
+    esac
+}
+
+# Function to update package repositories
+update_repos() {
+    case "$PACKAGE_MANAGER" in
+        "system")
+            sudo nala update
+            ;;
+        *)
+            echo "This option is only supported for the system package manager."
+            exit 1
+            ;;
+    esac
+}
+
+# Function to upgrade packages
+upgrade_packages() {
+    case "$PACKAGE_MANAGER" in
+        "system")
+            sudo nala upgrade
+            ;;
+        "flatpak")
+            flatpak update
+            ;;
+        *)
+            echo "This option is only supported for the system & flatpak package managers."
+            exit 1
+            ;;
+    esac
+}
+
+# Function to display package manager version
+show_version() {
+    echo "redcatOS Package Manager Alpha"
+}
+
+# Main script
+
+# Detect Linux distribution
+detect_distribution
+
+# Set package manager based on distribution
+case "$DISTRIBUTION" in
+    "ubuntu" | "debian" | "linuxmint")
+        PACKAGE_MANAGER="system"
+        ;;
+    *)
+        echo "Unsupported distribution."
+        exit 1
+        ;;
+esac
+
+# Parse command-line options
+while getopts "t:ripunv" option; do
+    case "${option}" in
+        t)
+            PACKAGE_MANAGER="${OPTARG}"
+            ;;
+        r)
+            remove_package "${@:OPTIND}"
+            exit
+            ;;
+        i)
+            install_package "${@:OPTIND}"
+            exit
+            ;;
+        p)
+            autoremove_purge
+            exit
+            ;;
+        u)
+            update_repos
+            exit
+            ;;
+        n)
+            upgrade_packages
+            exit
+            ;;
+        v)
+            show_version
+            exit
+            ;;
+        *)
+            echo "Usage: $0 [-t <type>] [-r <package>] [-i <package>] [-p] [-u] [-n] [-v]"
+            exit 1
+            ;;
+    esac
+done
+
+echo "Usage: $0 [-t <type>] [-r <package>] [-i <package>] [-p] [-u] [-n] [-v]"
+exit 1
