@@ -8,4 +8,7 @@
 
 # Installation
 Run this script as `sudo` or root.
-```wget -O - https://raw.githubusercontent.com/redcatWare/pack/main/install | bash```
+
+```
+wget -O - https://raw.githubusercontent.com/redcatWare/pack/main/install | bash
+```
