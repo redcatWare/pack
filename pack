@@ -122,7 +122,14 @@ while getopts "t:ripunv" option; do
         t)
             PACKAGE_MANAGER="${OPTARG}"
             ;;
+        -manager)
+            PACKAGE_MANAGER="${OPTARG}"
+            ;;
         r)
+            remove_package "${@:OPTIND}"
+            exit
+            ;;
+        -remove)
             remove_package "${@:OPTIND}"
             exit
             ;;
@@ -130,7 +137,15 @@ while getopts "t:ripunv" option; do
             install_package "${@:OPTIND}"
             exit
             ;;
+        -install)
+            install_package "${@:OPTIND}"
+            exit
+            ;;
         p)
+            autoremove_purge
+            exit
+            ;;
+        -purge)
             autoremove_purge
             exit
             ;;
@@ -138,7 +153,15 @@ while getopts "t:ripunv" option; do
             update_repos
             exit
             ;;
+        -update)
+            update_repos
+            exit
+            ;;
         n)
+            upgrade_packages
+            exit
+            ;;
+        -upgrade)
             upgrade_packages
             exit
             ;;
@@ -146,8 +169,12 @@ while getopts "t:ripunv" option; do
             show_version
             exit
             ;;
+        -version)
+            show_version
+            exit
+            ;;
         *)
-            echo "Usage: pack [-t <type>] [-r <package>] [-i <package>] [-p] [-u] [-n] [-v]"
+            echo "Usage: pack [-t/--manager <type>] [-r/--remove <package>] [-i/--install <package>] [-p/--purge] [-u/--update] [-n/--upgrade] [-v/--version]"
             exit 1
             ;;
     esac
