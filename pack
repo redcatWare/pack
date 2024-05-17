@@ -181,5 +181,5 @@ while getopts "t:ripunv" option; do
     esac
 done
 
-echo "Usage: pack [-t <type>] [-r <package>] [-i <package>] [-p] [-u] [-n] [-v]"
+echo "Usage: pack [-t/-manager <type>] [-r/-remove <package>] [-i/-install <package>] [-p/-purge] [-u/-update] [-n/-upgrade] [-v/-version]"
 exit 1
