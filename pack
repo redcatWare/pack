@@ -156,7 +156,7 @@ upgrade_packages() {
 
 # Function to display package manager version
 show_version() {
-    echo "redcatOS Package Manager Beta 0.1.0"
+    echo "redcatOS Package Manager Beta 0.1.1"
     echo "(c) redcatWare 2024"
 }
 
@@ -234,11 +234,11 @@ while getopts "t:ripunv" option; do
             exit
             ;;
         s)
-            search_packages
+            search_package
             exit
             ;;
         -search)
-            search_packages
+            search_package
             exit
             ;;
         *)
