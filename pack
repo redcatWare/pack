@@ -147,11 +147,11 @@ while getopts "t:ripunv" option; do
             exit
             ;;
         *)
-            echo "Usage: $0 [-t <type>] [-r <package>] [-i <package>] [-p] [-u] [-n] [-v]"
+            echo "Usage: pack [-t <type>] [-r <package>] [-i <package>] [-p] [-u] [-n] [-v]"
             exit 1
             ;;
     esac
 done
 
-echo "Usage: $0 [-t <type>] [-r <package>] [-i <package>] [-p] [-u] [-n] [-v]"
+echo "Usage: pack [-t <type>] [-r <package>] [-i <package>] [-p] [-u] [-n] [-v]"
 exit 1
