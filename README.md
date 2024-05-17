@@ -10,5 +10,5 @@
 Run this command as `sudo` or root.
 
 ```
-wget -O /usr/bin/pack https://raw.githubusercontent.com/redcatWare/pack/main/pack | chmod +x /usr/bin/pack
+wget -O /usr/bin/pack https://raw.githubusercontent.com/redcatWare/pack/main/pack && chmod +x /usr/bin/pack
 ```
