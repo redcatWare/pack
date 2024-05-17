@@ -25,12 +25,35 @@ install_package() {
             flatpak install flathub "$@"
             ;;
         "aur")
-            sudo pacstall install "$@"
+            sudo pacstall -I "$@"
+            ;;
+        "brew")
+            brew install "$@"
+            ;;
+        "nix")
+            nix-env -i "$@"
+            ;;
+        "lure")
+            lure in "$@"
+            ;;
+        "snap")
+            sudo snap install "$@"
             ;;
         *)
             echo "Unsupported package manager."
             exit 1
             ;;
+    esac
+}
+
+# Function to search packages
+search_package() {
+            sudo nala search "$@" \
+            sudo pacstall -S "$@" \
+            brew search "$@" \
+            nix-env --query "$@" \
+            lure ls "$@" \
+            sudo snap search "$@" \
     esac
 }
 
@@ -41,10 +64,22 @@ remove_package() {
             sudo nala remove "$@"
             ;;
         "aur")
-            sudo pacstall remove "$@"
+            sudo pacstall -R "$@"
             ;;
         "flatpak")
             flatpak remove "$@"
+            ;;
+        "brew")
+            brew uninstall "$@"
+            ;;
+        "nix")
+            nix-env --uninstall "$@"
+            ;;
+        "lure")
+            lure rm "$@"
+            ;;
+        "snap")
+            sudo snap remove "$@"
             ;;
         *)
             echo "Unsupported package manager."
@@ -72,6 +107,18 @@ update_repos() {
         "system")
             sudo nala update
             ;;
+        "brew")
+            brew update
+            ;;
+        "lure")
+            lure ref
+            ;;
+        "snap")
+            sudo snap refresh
+            ;;
+        "aur")
+            sudo pacstall -U
+            ;;
         *)
             echo "This option is only supported for the system package manager."
             exit 1
@@ -88,8 +135,20 @@ upgrade_packages() {
         "flatpak")
             flatpak update
             ;;
+        "aur")
+            sudo pacstall -Up
+            ;;
+        "brew")
+            brew upgrade
+            ;;
+        "nix")
+            nix-env --upgrade "$@"
+            ;;
+        "lure")
+            lure up
+            ;;
         *)
-            echo "This option is only supported for the system & flatpak package managers."
+            echo "This option is only supported for supported package managers."
             exit 1
             ;;
     esac
@@ -97,7 +156,7 @@ upgrade_packages() {
 
 # Function to display package manager version
 show_version() {
-    echo "redcatOS Package Manager Alpha"
+    echo "redcatOS Package Manager Beta 0.1.0"
     echo "(c) redcatWare 2024"
 }
 
@@ -172,6 +231,14 @@ while getopts "t:ripunv" option; do
             ;;
         -version)
             show_version
+            exit
+            ;;
+        s)
+            search_packages
+            exit
+            ;;
+        -search)
+            search_packages
             exit
             ;;
         *)
