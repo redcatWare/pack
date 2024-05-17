@@ -47,14 +47,17 @@ install_package() {
 }
 
 # Function to search packages
+packmans=( "nala search" "pacstall -S" "brew search" "nix-env --query" "lure ls" "snap search" )
+
 search_package() {
-            sudo nala search "$@" \
-            sudo pacstall -S "$@" \
-            brew search "$@" \
-            nix-env --query "$@" \
-            lure ls "$@" \
-            sudo snap search "$@" \
-    esac
+  program_name="$1"
+  for manager_command in "${packmans[@]}"; do
+    # Check if package manager exists (optional)
+    if command -v "${manager_command%% *}" >/dev/null 2>&1; then
+      # Remove the "search" part and combine with program name
+      sudo ${manager_command%% *} "$program_name" 2>/dev/null
+    fi
+  done
 }
 
 # Function to remove packages
