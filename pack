@@ -15,6 +15,41 @@ detect_distribution() {
     fi
 }
 
+# Function to require superuser permissions
+function is_root() {
+  # Check for effective user ID (EUID) of 0 (root)
+  if [[ $EUID -eq 0 ]]; then
+    return 0  # Root
+  fi
+  return 1  # Not root
+}
+
+function requires_root() {
+  # Check if current operation requires root privileges
+  local operation="$1"
+  case "$operation" in
+    i|r|p|u|n)
+      return 0  # Requires root
+      ;;
+    *)
+      return 1  # Doesn't require root
+      ;;
+  esac
+}
+
+# Main script logic
+
+if ! is_root; then
+  # Actions requiring root
+  if requires_root "$1"; then
+    echo "Superuser privileges are required."
+    exit 1
+  fi
+fi
+
+# Rest of your script logic for allowed non-root operations (version, help, etc.)
+
+
 # Function to install packages
 install_package() {
     case "$PACKAGE_MANAGER" in
