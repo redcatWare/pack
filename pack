@@ -224,32 +224,10 @@ esac
 while getopts "t:ripunv" option; do
     case "${option}" in
         t)
-      # Check if a package manager is already selected
-      if [[ -n "$PACKAGE_MANAGER" ]]; then
-            # Handle functionality specific to the selected package manager
-            echo "Error: Package manager '$PACKAGE_MANAGER' is already selected. Use 'pack -t list' to see available options."
-                else
-            # No package manager selected, proceed with listing
-            PACKAGE_MANAGER="system flatpak aur brew nix lure snap"  # Replace with actual list of supported managers (Nala, Snapd, etc.)
-            echo "Available package managers:"
-                for manager in $PACKAGE_MANAGER; do
-                  echo "  - $manager"
-                done
-              fi
+            PACKAGE_MANAGER="${OPTARG}"
             ;;
         -manager)
-      # Check if a package manager is already selected
-      if [[ -n "$PACKAGE_MANAGER" ]]; then
-            # Handle functionality specific to the selected package manager
-            echo "Error: Package manager '$PACKAGE_MANAGER' is already selected. Use 'pack -t list' to see available options."
-                else
-            # No package manager selected, proceed with listing
-            PACKAGE_MANAGER="system flatpak aur brew nix lure snap"  # Replace with actual list of supported managers (Nala, Snapd, etc.)
-            echo "Available package managers:"
-                for manager in $PACKAGE_MANAGER; do
-                  echo "  - $manager"
-                done
-              fi
+            PACKAGE_MANAGER="${OPTARG}"
             ;;
         r)
             remove_package "${@:OPTIND}"
