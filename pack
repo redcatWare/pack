@@ -170,8 +170,14 @@ detect_distribution
 
 # Set package manager based on distribution
 case "$DISTRIBUTION" in
-    "ubuntu" | "debian" | "linuxmint")
+    "ubuntu" | "debian" | "linuxmint" | "redcatos")
         PACKAGE_MANAGER="system"
+        ;;
+    "fedora" | "rocky" | "centos" | "almalinux")
+        PACKAGE_MANAGER="fedora-system"
+        ;;
+    "endeavouros" | "manjaro" | "arch" | "artix")
+        PACKAGE_MANAGER="arch-system"
         ;;
     *)
         echo "Unsupported distribution."
