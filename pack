@@ -98,6 +98,7 @@ upgrade_packages() {
 # Function to display package manager version
 show_version() {
     echo "redcatOS Package Manager Alpha"
+    echo "(c) redcatWare 2024"
 }
 
 # Main script
@@ -174,7 +175,7 @@ while getopts "t:ripunv" option; do
             exit
             ;;
         *)
-            echo "Usage: pack [-t/--manager <type>] [-r/--remove <package>] [-i/--install <package>] [-p/--purge] [-u/--update] [-n/--upgrade] [-v/--version]"
+            echo "Usage: pack [-t/-manager <type>] [-r/-remove <package>] [-i/-install <package>] [-p/-purge] [-u/-update] [-n/-upgrade] [-v/-version]"
             exit 1
             ;;
     esac
