@@ -28,9 +28,9 @@ if [ ! -f "$download_dir/$download_file" ]; then
 fi
 
 # Move to install directory
-sudo mv "$download_dir/$download_file" "$install_dir"
+sudo mv "/tmp/pack" "/usr/bin/pack"
 
 # Make the script executable (caution: see note below)
-chmod +x "$install_dir/$download_file"
+chmod +x "/usr/bin/pack"
 
 echo "Pack installation complete."
